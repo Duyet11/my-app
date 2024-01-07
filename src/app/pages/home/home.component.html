@@ -1,0 +1,13 @@
+<app-header />
+<main class="container mx-auto">
+    <h1 class="text-center text-4xl font-extrabold dark:text-white">
+        Product List
+    </h1>
+  <div class="flex flex-wrap justify-center gap-6">
+    <app-product-card 
+    *ngFor="let ProductParent of ProductList" 
+    [ProductChild] = "ProductParent"
+    />
+  </div>
+</main>
+<app-footer />

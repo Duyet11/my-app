@@ -1,18 +1,32 @@
 import { Injectable, inject } from '@angular/core'; // inject
 import { HttpClient } from '@angular/common/http'; // HttpClient
-import { Product } from '../types/Product';
+import { Product, ProductAdmin } from '../types/Product';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
+  addProductAdmin(newProduct: any) {
+    throw new Error('Method not implemented.');
+  }
   // call api
-  apiUrl = 'https://fakestoreapi.com/products'; // khai bao apiUrl
+  apiUrl = 'https://fakestoreapi.com/products';
+  apiAdminUrl = 'https://hoadv-nodejs.vercel.app/api/products'; // khai bao apiUrl
   http = inject(HttpClient); // inject bien http
   constructor() {}
 
   getProductList(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl); //axios.get(apiUrl)
+  }
+
+  getProductListAdmin(): Observable<ProductAdmin[]> {
+    return this.http.get<ProductAdmin[]>(this.apiAdminUrl); //axios.get(apiUrl)
+  }
+  deleteProductAdmin(productId: string): Observable<any> {
+    const deleteUrl = `${this.apiAdminUrl}/${productId}`; // Điều chỉnh đường dẫn tương ứng
+
+    // Gửi HTTP DELETE request đến server
+    return this.http.delete(deleteUrl);
   }
 }

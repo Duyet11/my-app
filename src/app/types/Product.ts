@@ -16,3 +16,4 @@ export type ProductAdmin = Omit<Product, 'id' | 'category'> & {
   _id: string;
   category: Category;
 }
+export type ProductAdd = Omit<Product, 'id' | 'rating'>;

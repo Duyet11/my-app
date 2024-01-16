@@ -1,21 +1,21 @@
-import { ProductService } from '../../../services/product.service';
-import { NgFor } from '@angular/common';
+import { DescriptionPipe } from './../../../pipes/description.service';
 import { Component, inject } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { RouterLink } from '@angular/router';
+
 import { ProductAdmin } from '../../../types/Product';
-// import 'react-notifications/lib/notifications.css';
-
-
-
+import { ProductService } from '../../../services/product.service'; // import services
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [NgFor], 
+  imports: [NgFor, DescriptionPipe, RouterLink],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',
 })
 export class ProductsComponent {
-  productService = inject(ProductService);
+  productService = inject(ProductService); // inject vao bien
+
   productList: ProductAdmin[] = [];
 
   ngOnInit(): void {
@@ -23,12 +23,16 @@ export class ProductsComponent {
       .getProductListAdmin()
       .subscribe((products) => (this.productList = products)); // callApi.then(cb fuc)
   }
-  deleteProduct(productId: string): void {
-    this.productService.deleteProductAdmin(productId).subscribe(() => {
-      this.productList = this.productList.filter(product => product._id !== productId);
-      
-    });
+  handleDeleteProduct(id: string) {
+    if (window.confirm('Do you really remove product?')) {
+      this.productService
+        .deleteProductById(id)
+        .subscribe(
+          () =>
+            (this.productList = this.productList.filter(
+              (product) => product._id !== id
+            ))
+        );
+    }
   }
-  
-
 }

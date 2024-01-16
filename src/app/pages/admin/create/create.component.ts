@@ -34,6 +34,9 @@ export class CreateComponent {
   }
   handleSubmit() {
     console.log(this.productAdd);
+    if (!this.productAdd.title) return alert('Them ten san pham');
+    if (!this.productAdd.category) return alert('Chon danh muc san pham');
+
     this.productService
       .createProduct(this.productAdd)
       .subscribe(() => this.router.navigate(['/admin/products']));

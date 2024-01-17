@@ -1,37 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
+import { ProductAdd } from '../../../types/Product';
+import { ProductService } from '../../../services/product.service';
+
 @Component({
-  selector: 'app-edit',
+  selector: 'app-edit-product',
   standalone: true,
   imports: [FormsModule],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.css',
 })
+
 export class EditComponent {
-  productId: string | undefined = '1';
-
-  productEdit = {
-    title: 'SPA ',
-    price: 1,
-    description: 'asd',
-    image: 'asdasd',
-    rate: 3,
+  productId: number | undefined;
+  product: ProductAdd = {
+    title: '',
+    description: '',
+    image: '',
+    category: '',
+    price: 0,
+    rate: 0,
   };
+  
 
-  constructor() {
-    // call api get
+  productService = inject(ProductService);
+  router = inject(Router);
+
+  route = inject(ActivatedRoute);
+
+  ngOnInit(): void {
+    this.route.params.subscribe((param) => {
+      this.productId = param['id']; //return this.getProductById();
+      
+    });
   }
 
-  getProductDetail() {
-    if (!this.productId) return;
-    //call service ProductDetail(id).subcrib(product => this.productEdit  = product)
-  }
+  // getProductById() {
+  //   if (!this.productId) return;
+  //   return this.productService
+  //     .getProductDetail(this.productId)
+  //     .subscribe((product) => (this.product = product));
+  // }
 
   handleSubmit() {
-    console.log(this.productId); // lam sao lay dc
-
-    console.log(this.productEdit);
-    // call service api POST products
+    if (!this.productId) return;
+    if (!this.product.title) return alert('Them ten san pham');
+    this.productService
+      .updateProduct(this.productId, this.product)
+      .subscribe(() => this.router.navigate(['/admin/products']));
   }
 }

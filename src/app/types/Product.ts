@@ -12,11 +12,14 @@ export type Product = {
     };
   };
 
-export type ProductAdmin = Omit<Product, 'id' | 'category'> & {
+export type ProductAdmin = Omit<Product, 'id' | 'category' | 'rate'> & {
   _id: string;
   category: Category;
+  rate: number;
 }
-export type ProductAdd = Omit<Product, 'id' | 'rating'> & {rate: number;};
+export type ProductAdd = Omit<Product, 'id' | 'rating'> & {
+  rate: number;
+};
 // export type ApiProduct = Omit<Product, 'id' | 'rating'> & {
 //   _id: string;
 //   category: Category;

@@ -57,6 +57,7 @@ export class EditComponent {
 
   handleSubmit() {
     if (!this.productId) return;
+    
     this.productService
       .updateProductById(this.productEdit, this.productId)
       .subscribe(() => this.router.navigate(['/admin/products']));

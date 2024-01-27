@@ -16,8 +16,7 @@ import { CreateComponent as CreateUserComponent } from './pages/admin/users/crea
 import { EditComponent as EditUserComponent } from './pages/admin/users/edit/edit.component';
 import { authGuard } from './guard/admin.guard';
 export const routes: Routes = [
-  // route '/' = page Home
-  // path, component
+
   { path: '', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
@@ -35,6 +34,6 @@ export const routes: Routes = [
       { path: 'users/create', component: CreateUserComponent },
       { path: 'users/edit/:id', component: EditUserComponent },
     ],
-    canActivate: [authGuard],
+    canActivate: [authGuard]
   },
 ];

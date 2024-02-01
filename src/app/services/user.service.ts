@@ -1,18 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from '../types/User';
+import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class UserService {
-  apiAdminUrl = 'https://hoadv-nodejs.vercel.app/students'; // khai bao apiUrl
-  http = inject(HttpClient); // inject bien http
 
-  constructor() {}
-
-  getUserListAdmin(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiAdminUrl); //axios.get(apiUrl)
-  }
+  constructor() { }
 }

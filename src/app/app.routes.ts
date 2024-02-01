@@ -1,39 +1,36 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { ProductsComponent } from './pages/admin/products/products.component';
+import { AboutComponent } from './pages/about/about.component';
+import { ProductsComponent } from './pages/admin/ProductAdmin/products/products.component';
 import { AdminComponent } from './layouts/admin/admin.component';
 import { CreateComponent } from './pages/admin/create/create.component';
-import { EditComponent } from './pages/admin/edit/edit.component';
-import { RegisterComponent } from './pages/register/register.component';
+import { EditComponent } from './pages/admin/ProductAdmin/edit/edit.component';
 import { LoginComponent } from './pages/login/login.component';
-
-import { ListComponent as ListCategoryComponent } from './pages/admin/categories/list/list.component';
-import { CreateComponent as CreateCategoryComponent } from './pages/admin/categories/create/create.component';
-import { EditComponent as EditCategoryComponent } from './pages/admin/categories/edit/edit.component';
-
-import { ListComponent as ListUserComponent } from './pages/admin/users/list/list.component';
-import { CreateComponent as CreateUserComponent } from './pages/admin/users/create/create.component';
-import { EditComponent as EditUserComponent } from './pages/admin/users/edit/edit.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { authGuard } from './guard/admin.guard';
-export const routes: Routes = [
+import { CreateCategoryComponent } from './pages/admin/Category/createcategory/createcategory.component';
+import { ListcategoryComponent } from './pages/admin/Category/listcategory/listcategory.component';
+import { EditCategoryComponent } from './pages/admin/Category/editcategory/editcategory.component'; 
 
+export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   {
     path: 'admin',
     component: AdminComponent,
     children: [
-      { path: 'products', component: ProductsComponent },
-      { path: 'products/create', component: CreateComponent },
-      { path: 'products/edit/:id', component: EditComponent },
-      { path: 'categories/list', component: ListCategoryComponent },
-      { path: 'categories/create', component: CreateCategoryComponent },
-      { path: 'categories/edit/:id', component: EditCategoryComponent },
-      { path: 'users/list', component: ListUserComponent },
-      { path: 'users/create', component: CreateUserComponent },
-      { path: 'users/edit/:id', component: EditUserComponent },
+      { path: 'admin', component: ProductsComponent },
+      { path: 'products', component: ProductsComponent }, //router product admin
+      { path: 'create', component: CreateComponent }, //router product admin
+      { path: 'products/:id', component: EditComponent }, //router product admin
+      { path: 'admin', component: ProductsComponent }, //router category admin
+      { path: 'category', component: ProductsComponent }, //router category admin
+      { path: 'category/create', component: CreateCategoryComponent }, //router category admin
+      { path: 'category/list', component: ListcategoryComponent }, //router category admin
+      { path: 'category/:id', component: EditCategoryComponent }, //router category admin
     ],
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
 ];

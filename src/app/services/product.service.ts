@@ -1,40 +1,38 @@
 import { Injectable, inject } from '@angular/core'; // inject
 import { HttpClient } from '@angular/common/http'; // HttpClient
-import { Product, ProductAdmin, ProductAdd } from '../types/Product';
+import { Product, ProductAdmin } from '../types/Product';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
+  createProduct(productAdd: { title: string; price: number; description: string; image: string; rate: number; category: string; }) {
+    throw new Error('Method not implemented.');
+  }
   // call api
-  apiUrl = 'https://fakestoreapi.com/products';
-  apiAdminUrl = 'https://hoadv-nodejs.vercel.app/api/products'; // khai bao apiUrl
+  apiUrl = 'https://apipro.netlify.app/.netlify/functions/api/product';
 
   http = inject(HttpClient); // inject bien http
   constructor() {}
 
   getProductList(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl); //axios.get(apiUrl)
+    return this.http.get<Product[]>(this.apiUrl);
   }
 
   getProductListAdmin(): Observable<ProductAdmin[]> {
-    return this.http.get<ProductAdmin[]>(this.apiAdminUrl); //axios.get(apiUrl)
+    return this.http.get<ProductAdmin[]>(this.apiUrl);
   }
-
-  deleteProductById(id: string) {
-    return this.http.delete(`${this.apiAdminUrl}/${id}`);
+  getOneProduct(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
-
-  createProduct(product: ProductAdd) {
-    return this.http.post<Product>(this.apiAdminUrl, product);
+  deleteProductAdmin(id: string): Observable<ProductAdmin[]> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
-
-  getDetailProductById(id: string) {
-    return this.http.get<ProductAdmin>(`${this.apiAdminUrl}/${id}`);
+  addProductAdmin(product: any) {
+    return this.http.post(`${this.apiUrl}`, product);
   }
-
-  updateProductById(product: ProductAdd, id: string) {
-    return this.http.put<Product>(`${this.apiAdminUrl}/${id}`, product);
+  editProduct(product: any) {
+    return this.http.put(`${this.apiUrl}/${product.id}`, product);
   }
 }

@@ -1,45 +1,68 @@
-import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Category } from '../../../types/Category';
-import { CategoryService } from '../../../services/category.service';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
 import { ProductService } from '../../../services/product.service';
+import { CategoryService } from '../../../services/category.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create',
   standalone: true,
-  imports: [FormsModule, NgFor],
+  imports: [FormsModule, ReactiveFormsModule, NgFor, NgIf, ToastModule],
   templateUrl: './create.component.html',
   styleUrl: './create.component.css',
+  providers: [MessageService],
 })
 export class CreateComponent {
-  categoryService = inject(CategoryService); // inject vao bien
-  productService = inject(ProductService); // inject vao bien
-  router = inject(Router);
-  productAdd = {
-    title: '',
-    price: 0,
-    description: '',
-    image: '',
-    rate: 0,
-    category: '',
-  };
-  categoryList: Category[] = [];
-
-  ngOnInit(): void {
-    this.categoryService
-      .getCategoryListAdmin()
-      .subscribe((categories) => (this.categoryList = categories)); // callApi.then(cb fuc)
+  userForm: FormGroup;
+  categories: any = [];
+  constructor(
+    private productService: ProductService,
+    private categoryService: CategoryService,
+    private formBuilder: FormBuilder,
+    private messageService: MessageService,
+    private router: Router
+  ) {
+    this.userForm = this.formBuilder.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      price: ['', Validators.required],
+      image: ['', Validators.required],
+      categoryId: ['', Validators.required],
+    });
   }
-  handleSubmit() {
-    console.log(this.productAdd);
-    if (!this.productAdd.title) return alert('Them ten san pham');
-    if (!this.productAdd.category) return alert('Chon danh muc san pham');
+  ngOnInit(): void {
+    this.categoryService.getCategory().subscribe((data: any) => {
+      this.categories = data.data;
+    });
+  }
+  onSubmit() {
+    if (this.userForm.valid) {
+      const formData = this.userForm.value;
 
-    this.productService
-      .createProduct(this.productAdd)
-      .subscribe(() => this.router.navigate(['/admin/products']));
-    // call service api POST products
+      this.productService.addProductAdmin(formData).subscribe((data: any) => {
+        if (data.status === 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Add Success',
+          });
+          this.userForm.reset();
+          setTimeout(() => {
+            this.router.navigate(['/admin/products']);
+          }, 1000);
+        }
+      });
+    }
   }
 }

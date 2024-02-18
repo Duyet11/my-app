@@ -11,8 +11,8 @@ import {
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
-import { ProductService } from '../../../services/product.service';
-import { CategoryService } from '../../../services/category.service';
+import { ProductService } from '../../../../services/product.service';
+import { CategoryService } from '../../../../services/category.service';
 import { Router } from '@angular/router';
 
 @Component({

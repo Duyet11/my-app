@@ -3,7 +3,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { ProductCartComponent } from '../../components/product-cart/product-cart.component';
 import { NgFor } from '@angular/common';
-import { ProductService } from '../../services/product.service'; 
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +17,9 @@ export class HomeComponent {
   productList: any = [];
   ngOnInit(): void {
     this.productService
-      .getProductList()
-      .subscribe((products: any) => (this.productList = products.data));
+      .getProduct({ page: 0, size: 4 })
+      .subscribe((product: any) => {
+        return (this.productList = product.data);
+      });
   }
 }

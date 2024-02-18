@@ -1,5 +1,3 @@
-import { CategoryService } from './../../../../services/category.service';
-import { ProductService } from './../../../../services/product.service';
 import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -15,7 +13,8 @@ import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Product } from '../../../../types/Product';
-
+import { ProductService } from '../../../../services/product.service';
+import { CategoryService } from '../../../../services/category.service';
 
 @Component({
   selector: 'app-edit',
@@ -78,7 +77,7 @@ export class EditComponent {
     if (this.userForm.valid) {
       const formData = this.userForm.value;
       this.productService
-        .editProduct({ ...formData, id: this.dataupdate._id })
+        .updateProduct({ ...formData, id: this.dataupdate._id })
         .subscribe((data: any) => {
           if (data.status === 0) {
             this.messageService.add({
